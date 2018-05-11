@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>暴躁的小球</title>
+	<style>
+		*{margin:0;padding:0;}
+		.box{width:500px;height: 500px;margin:50px auto;border: 1px solid red;position: relative}
+		.ball{position: absolute;border-radius:50%}
+	</style>
+</head>
+<body>
+	<div class="box">
+		
+	</div>
+<script>
+	var box=document.querySelector('.box')
+	function Ball(){
+		this.ele=document.createElement('div')
+		this.ele.className='ball';
+		this.w=ran(10,50)
+		this.bg='rgba('+ran(0,255)+','+ran(0,255)+','+ran(0,255)+',0.8)';
+		//防止溢出边界
+		this.x=ran(0,500-this.w)
+		this.y=ran(0,500-this.w)
+		//速度
+		var speedX=ran(1,10)
+		var speedY=ran(1,10)
+		//移动方向随机
+		this.speedX=ran(1,2)==1?speedX:-speedX
+		this.speedY=ran(1,2)==1?speedY:-speedY
+
+
+		this.ele.style.background=this.bg
+		this.ele.style.width=this.w+'px'
+		this.ele.style.height=this.w+'px'
+		box.appendChild(this.ele)
+	}
+		
+	//原型链上添加移动的方法
+	Ball.prototype.move=function(){
+		//移动的距离
+		this.x+=this.speedX;
+		this.y+=this.speedY;
+		//防止X轴溢出
+		if(this.x>box.clientWidth-this.w){
+			this.x=box.clientWidth-this.w;
+			this.speedX*=-1;
+		}
+		if(this.x<=0){
+			this.x=0;
+			this.speedX*=-1;
+		}
+		//y轴
+		if(this.y>=box.clientHeight-this.w){
+			this.y=box.clientHeight-this.w;
+			this.speedY*=-1;
+		}
+		if(this.y<=0){
+			this.y=0;
+			this.speedY*=-1;
+		}
+		this.ele.style.left=this.x+'px';
+		this.ele.style.top=this.y+'px';
+	}
+	var arry=[]
+	//实例化对象
+	for(var i=0;i<=100;i++){
+		var ball=new Ball()
+		arry.push(ball)
+	}
+
+	//定时器
+	setInterval(function(){
+		for(var i=0;i<arry.length;i++){
+			arry[i].move();
+		}
+	},20)
+
+	//随机函数
+	function ran(min,max){
+		return Math.floor(Math.random()*(max-min+1)+min);
+	}
+</script>	
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>放大镜</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		#main{
+			width: 400px;
+			height: 300px;
+			margin: 100px 0 0 50px;
+			position: relative;
+		}
+		#main img{
+			width: 400px;
+			height: 300px;
+		}
+		#max{
+			display: none;
+			width: 400px;
+			height: 300px;
+			overflow: hidden;
+			border: 1px solid red;
+			position: absolute;
+			left: 450px;
+			top: 100px;
+		}
+		#max img{
+			position: absolute;
+		}
+		#mark{
+			background-color: rgba(0,0,0,0.3);
+			position: absolute;
+			left: 0;
+			top: 0;
+			cursor: move;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="main">
+		<div id="mark"></div>
+		<img src="index.jpg" alt="">
+	</div>
+	<div id="max">
+		<img src="index.jpg" alt="">
+	</div>
+
+
+
+	<script>
+		var main=document.getElementById('main');
+		var mark=document.getElementById('mark');
+		var max=document.getElementById('max');
+		var maxImg=max.getElementsByTagName('img')[0];
+
+		var scale=2;
+
+
+		//大图宽高
+		maxImg.style.width=main.clientWidth*scale+'px';
+		maxImg.style.height=main.clientHeight*scale+'px';
+
+
+		//蒙层宽高
+		mark.style.width=parseInt(main.clientWidth/scale)+'px';
+		mark.style.height=parseInt(main.clientHeight/scale)+'px';
+
+
+		//鼠标在main中移动是不断获取指针坐标,并相应改变蒙层属性
+		main.onmousemove=function(e){
+			var e=e||window.event;
+			//通过clientX,clientY相对main的坐标
+			var x=e.clientX-main.offsetLeft-main.clientLeft-mark.offsetWidth/2;
+			var y=e.clientY-main.offsetTop-main.clientTop-mark.offsetHeight/2;
+
+			
+
+			//计算x,y临界值
+			var maxX=main.clientWidth-mark.offsetWidth;
+			var maxY=main.clientHeight-mark.offsetHeight;
+			//判断临界
+			if(x>=maxX){
+				x=maxX
+			}
+			if(x<=0){
+				x=0
+			}
+			if(y>=maxY){
+				y=maxY
+			}
+			if(y<=0){
+				y=0
+			}
+
+			mark.style.left=x+'px';
+			mark.style.top=y+'px';
+
+			//设置大图移动
+			maxImg.style.left=-x*scale+'px';
+			maxImg.style.top=-y*scale+'px';
+
+		}
+
+		main.onmouseover=function(){
+			mark.style.display='block';
+			max.style.display='block';
+		}
+		main.onmouseout=function(){
+			mark.style.display='none';
+			max.style.display='none';
+		}
+
+
+	</script>
+</body>
+</html>

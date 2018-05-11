@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>标靶</title>
+	<style>
+		*{margin:0;padding:0;}
+		html,body{height:100%;}
+		body{display: flex;justify-content: center;align-items:center;background: #1e577e;overflow: hidden}
+		.main{width: 200px;height: 200px;position: relative}
+		.main>div{position: absolute;left: 0;top:0;width: 200px;height: 200px;}
+		.center{cursor:pointer;}
+		/*css3*/
+		.circle{border-radius: 50%;border: 1px solid #ccc;opacity:0;}
+		.circle.go{
+			/*动画的名字*/
+			animation-name: move;
+			/*动画的时长*/
+			animation-duration:3s;
+			/*动画的速度,匀速*/
+			animation-timing-function: linear;
+			/*动画播放的次数*/
+			animation-iteration-count: infinite;
+		}
+		/*开始动画*/
+		@keyframes move{
+			0%{
+				transform: scale(1,1);
+				opacity: .4;
+			}
+			100%{
+				transform: scale(4,4);
+				opacity: 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="main">
+		<div class="circle"></div>
+		<div class="circle"></div>
+		<div class="circle"></div>
+		<div class="circle"></div>
+		<div class="circle"></div>
+		<div class="center">
+			<img src="img/靶标系统.png" alt="">
+		</div>
+	</div>
+	<script>
+		var img=document.getElementsByClassName('center')[0]
+		var circle=document.getElementsByClassName('circle')
+		console.log(circle)
+		img.onclick=function(){
+			for(var i=0;i<circle.length;i++){
+				circle[i].style.animationDelay=i*0.6+"s";
+				circle[i].classList.add('go');
+			}
+		}
+	</script>
+</body>
+</html>
